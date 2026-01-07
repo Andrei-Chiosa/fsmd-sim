@@ -2,8 +2,9 @@
 
 import sys
 import xmltodict
+import pprint
 
-print("Welcome to the FSMD simulator! - Version ?? - Designed by ??")
+print("Welcome to the FSMD simulator! - Version 0.1 - Designed by Andrei Chiosa")
 
 if len(sys.argv) < 3:
     print('Too few arguments.')
@@ -234,15 +235,38 @@ def merge_dicts(*dict_args):
 cycle = 0
 state = initial_state
 
-print('\n---Start simulation---')
+print('\n---Start simulation---\n')
 
-######################################
-######################################
-# Write your code here!
-######################################
-######################################
+while True:
+    print("Cycle:", cycle)
+
+    # - Check each transition originating from the curernt state
+    for transition in fsmd.get(state):
+        if evaluate_condition(transition.get("condition")):
+            # - Transition condition is true
+            # - Perform the instructions in this transition
+            print("Current State:",state)
+            pprint.pprint(variables)
+            pprint.pprint(transition)
+            execute_instruction(transition.get("instruction"))
+
+            # - Update the current state
+            state = transition.get("nextstate")
+
+    cycle += 1
+    if cycle == iterations:
+        break
 
 print('\n---End of simulation---')
+
+print('\n---Start of debug---')
+
+# pprint.pprint(fsmd)
+# pprint.pprint(initial_state)
+# pprint.pprint(variables)
+# pprint.pprint(inputs)
+
+print('\n---End of debug---')
 
 #
 # Description:
