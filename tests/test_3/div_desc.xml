@@ -1,0 +1,105 @@
+<fsmddescription>
+  
+  <statelist>
+    <state>INITIALIZE</state>
+    <state>COMPARE</state>
+    <state>SUBSTRACT</state>
+    <state>INCREMENT</state>
+    <state>DONE</state>
+  </statelist>
+
+  <initialstate>INITIALIZE</initialstate>
+
+  <inputlist>
+    <input>in_DIVIDEND</input>
+    <input>in_DIVISOR</input>
+  </inputlist>
+
+  <variablelist>
+    <variable>var_DIVIDEND_REM</variable>
+    <variable>var_DIVISOR</variable>
+    <variable>var_QUOTIENT</variable>
+  </variablelist>
+
+  <operationlist>
+    <operation>
+      <name>init_DIVIDEND</name>
+      <expression>var_DIVIDEND_REM = in_DIVIDEND</expression>
+    </operation>
+    <operation>
+      <name>init_DIVISOR</name>
+      <expression>var_DIVISOR = in_DIVISOR</expression>
+    </operation>
+    <operation>
+      <name>init_QUOTIENT</name>
+      <expression>var_QUOTIENT = 0</expression>
+    </operation>
+    <operation>
+      <name>DIVIDEND_minus_DIVISOR</name>
+      <expression>var_DIVIDEND_REM = var_DIVIDEND_REM - var_DIVISOR</expression>
+    </operation>
+    <operation>
+      <name>QUOUTIENT_INCR</name>
+      <expression>var_QUOTIENT = var_QUOTIENT + 1</expression>
+    </operation>
+  </operationlist>
+
+  <conditionlist>
+    <condition>
+      <name>DIVIDEND_geq_DIVISOR</name>
+      <expression>var_DIVIDEND_REM &gt;= var_DIVISOR</expression>
+    </condition>
+    <condition>
+      <name>DIVISOR_gt_DIVIDEND</name>
+      <expression>var_DIVISOR &gt; var_DIVIDEND_REM</expression>
+    </condition>
+  </conditionlist>
+
+  <fsmd>
+    <INITIALIZE>
+      <transition>
+        <condition>True</condition>
+        <instruction>init_DIVIDEND init_DIVISOR init_QUOTIENT</instruction>
+        <nextstate>COMPARE</nextstate> 
+      </transition>
+    </INITIALIZE>
+
+    <COMPARE> 
+      <transition>
+        <condition>DIVIDEND_geq_DIVISOR</condition>
+        <instruction>NOP</instruction>
+        <nextstate>SUBSTRACT</nextstate>
+      </transition>
+      <transition>
+        <condition>DIVISOR_gt_DIVIDEND</condition>
+        <instruction>NOP</instruction>
+        <nextstate>DONE</nextstate>
+      </transition>
+    </COMPARE>
+      
+    <SUBSTRACT>
+      <transition>
+        <condition>True</condition>
+        <instruction>DIVIDEND_minus_DIVISOR</instruction>
+        <nextstate>INCREMENT</nextstate>
+      </transition>
+    </SUBSTRACT>
+
+    <INCREMENT>
+      <transition>
+        <condition>True</condition>
+        <instruction>QUOUTIENT_INCR</instruction>
+        <nextstate>COMPARE</nextstate>
+      </transition>
+    </INCREMENT>
+
+    <DONE>
+      <transition>
+        <condition>True</condition>
+        <instruction>NOP</instruction>
+        <nextstate>DONE</nextstate>
+      </transition>
+    </DONE>
+  </fsmd>
+
+</fsmddescription>

@@ -1,0 +1,25 @@
+<fsmdstimulus>
+
+  <setinput>
+    <cycle>0</cycle>
+    <expression>in_DIVIDEND = 33</expression>
+  </setinput>
+
+  <setinput>
+    <cycle>0</cycle>
+    <expression>in_DIVISOR = 5</expression>
+  </setinput>
+
+  <setinput>
+    <cycle>1</cycle>
+    <expression>in_DIVIDEND = 0</expression>
+  </setinput>
+
+  <setinput>
+    <cycle>1</cycle>
+    <expression>in_DIVISOR = 0</expression>
+  </setinput>
+
+  <endstate>DONE</endstate>
+
+</fsmdstimulus>
