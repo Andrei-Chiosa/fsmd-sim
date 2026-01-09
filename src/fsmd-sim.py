@@ -236,9 +236,26 @@ cycle = 0
 state = initial_state
 
 print('\n---Start simulation---\n')
+pprint.pprint(fsmd_stim)
 
 while True:
     print("Cycle:", cycle)
+
+    # - External input to the simulator
+    try:
+        if (not(fsmd_stim['fsmdstimulus']['setinput'] is None)):
+            for setinput in fsmd_stim['fsmdstimulus']['setinput']:
+                if type(setinput) is str:
+                    #Only one element
+                    if int(fsmd_stim['fsmdstimulus']['setinput']['cycle']) == cycle:
+                        execute_setinput(fsmd_stim['fsmdstimulus']['setinput']['expression'])
+                    break
+                else:
+                    #More than 1 element
+                    if int(setinput['cycle']) == cycle:
+                        execute_setinput(setinput['expression'])
+    except:
+        pass
 
     # - Check each transition originating from the curernt state
     for transition in fsmd.get(state):
@@ -253,20 +270,31 @@ while True:
             # - Update the current state
             state = transition.get("nextstate")
 
+    # - Check if the end state of the simulation was reached and end the simulatior
+    try:
+        if (not(fsmd_stim['fsmdstimulus']['endstate'] is None)):
+            if state == fsmd_stim['fsmdstimulus']['endstate']:
+                print('End-state reached.')
+                repeat = False
+                break 
+    except:
+        pass
+
     cycle += 1
     if cycle == iterations:
         break
 
 print('\n---End of simulation---')
 
-print('\n---Start of debug---')
+#print('\n---Start of debug---')
 
 # pprint.pprint(fsmd)
 # pprint.pprint(initial_state)
 # pprint.pprint(variables)
 # pprint.pprint(inputs)
+#pprint.pprint(inputs)
 
-print('\n---End of debug---')
+#print('\n---End of debug---')
 
 #
 # Description:
